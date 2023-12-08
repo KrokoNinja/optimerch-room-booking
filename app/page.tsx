@@ -1,57 +1,71 @@
-import DeployButton from '../components/DeployButton'
-import AuthButton from '../components/AuthButton'
-import { createClient } from '@/utils/supabase/server'
-import ConnectSupabaseSteps from '@/components/ConnectSupabaseSteps'
-import SignUpUserSteps from '@/components/SignUpUserSteps'
-import Header from '@/components/Header'
-import { cookies } from 'next/headers'
+import AuthButton from "../components/AuthButton";
+import { createClient } from "@/utils/supabase/server";
+import { cookies } from "next/headers";
+import Meeting from "@/components/Meeting";
+import { getHoerde } from "@/hooks/getHoerde";
+import { getAplerbeck } from "@/hooks/getAplerbeck";
+import { getBrackel } from "@/hooks/getBrackel";
+import { getSpan } from "@/hooks/getSpan";
+import TimeTable from "@/components/TimeTable";
+import RoomTable from "@/components/RoomTable";
 
 export default async function Index() {
-  const cookieStore = cookies()
+	const cookieStore = cookies();
 
-  const canInitSupabaseClient = () => {
-    // This function is just for the interactive tutorial.
-    // Feel free to remove it once you have Supabase connected.
-    try {
-      createClient(cookieStore)
-      return true
-    } catch (e) {
-      return false
-    }
-  }
+	const canInitSupabaseClient = () => {
+		// This function is just for the interactive tutorial.
+		// Feel free to remove it once you have Supabase connected.
+		try {
+			createClient(cookieStore);
+			return true;
+		} catch (e) {
+			return false;
+		}
+	};
 
-  const isSupabaseConnected = canInitSupabaseClient()
+	const isSupabaseConnected = canInitSupabaseClient();
 
-  return (
-    <div className="flex-1 w-full flex flex-col gap-20 items-center">
-      <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-        <div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
-          <DeployButton />
-          {isSupabaseConnected && <AuthButton />}
-        </div>
-      </nav>
+	const supabase = createClient(cookieStore);
 
-      <div className="animate-in flex-1 flex flex-col gap-20 opacity-0 max-w-4xl px-3">
-        <Header />
-        <main className="flex-1 flex flex-col gap-6">
-          <h2 className="font-bold text-4xl mb-4">Next steps</h2>
-          {isSupabaseConnected ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
-        </main>
-      </div>
+	const { data } = await supabase.from("rooms").select().order("start", { ascending: true });
+	const meetings = data?.map((meeting) => {
+		return {
+			startHour: new Date(meeting.start).getHours(),
+			startMinute: new Date(meeting.start).getMinutes(),
+			endHour: new Date(meeting.end).getHours(),
+			endMinute: new Date(meeting.end).getMinutes(),
+			room: meeting.room,
+		};
+	}, []);
 
-      <footer className="w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs">
-        <p>
-          Powered by{' '}
-          <a
-            href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-            target="_blank"
-            className="font-bold hover:underline"
-            rel="noreferrer"
-          >
-            Supabase
-          </a>
-        </p>
-      </footer>
-    </div>
-  )
+	return (
+		<div className="flex-1 w-full flex flex-col gap-20 items-center">
+			<nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
+				<div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
+					{isSupabaseConnected && <AuthButton />}
+				</div>
+			</nav>
+
+			<div className="flex w-full max-w-5xl">
+				<TimeTable />
+				<RoomTable meetings={meetings} room="aplerbeck" />
+				<RoomTable meetings={meetings} room="hoerde" />
+				<RoomTable meetings={meetings} room="brackel" />
+			</div>
+
+			<footer className="w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs">
+				<p>
+					Powered by{" "}
+					<a
+						href="https://www.optimerch.de/"
+						target="_blank"
+						className="font-bold hover:underline"
+						rel="noreferrer"
+					>
+						Optimerch GmbH
+					</a>
+				</p>
+			</footer>
+		</div>
+	);
 }
