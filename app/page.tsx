@@ -8,6 +8,7 @@ import { getBrackel } from "@/hooks/getBrackel";
 import { getSpan } from "@/hooks/getSpan";
 import TimeTable from "@/components/TimeTable";
 import RoomTable from "@/components/RoomTable";
+import FormDialog from "@/components/FormDialog";
 
 export default async function Index() {
 	const cookieStore = cookies();
@@ -45,6 +46,8 @@ export default async function Index() {
 					{isSupabaseConnected && <AuthButton />}
 				</div>
 			</nav>
+
+			<FormDialog />
 
 			<div className="flex w-full max-w-5xl">
 				<TimeTable />
