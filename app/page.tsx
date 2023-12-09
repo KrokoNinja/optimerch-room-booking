@@ -1,11 +1,6 @@
 import AuthButton from "../components/AuthButton";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
-import Meeting from "@/components/Meeting";
-import { getHoerde } from "@/hooks/getHoerde";
-import { getAplerbeck } from "@/hooks/getAplerbeck";
-import { getBrackel } from "@/hooks/getBrackel";
-import { getSpan } from "@/hooks/getSpan";
 import TimeTable from "@/components/TimeTable";
 import RoomTable from "@/components/RoomTable";
 import FormDialog from "@/components/FormDialog";

@@ -1,5 +1,6 @@
 import { calcMeetingLength } from "@/hooks/calcMeetingLength";
 import Meeting from "./Meeting";
+import FreeRow from "./FreeRow";
 
 interface RoomTableProps {
 	meetings:
@@ -50,7 +51,7 @@ function RoomTable({ meetings, room }: RoomTableProps) {
 							) : tableRows[index] === "meeting" ? (
 								<></>
 							) : (
-								<td></td>
+								<FreeRow time={index} />
 							)}
 						</tr>
 					);
