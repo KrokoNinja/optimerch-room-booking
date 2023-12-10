@@ -26,7 +26,12 @@ function RoomTable({ meetings, room }: RoomTableProps) {
 			for (let i = 0; i < roomMeetings.length; i++) {
 				if (hour + minute === roomMeetings[i].startHour + roomMeetings[i].startMinute) {
 					tableRows[index] = roomMeetings[i];
-					let meetingsLenght = calcMeetingLength(roomMeetings[i]);
+					let meetingsLenght = calcMeetingLength(
+						roomMeetings[i].startHour,
+						roomMeetings[i].startMinute,
+						roomMeetings[i].endHour,
+						roomMeetings[i].endMinute
+					);
 					for (let i = 1; i < meetingsLenght; i++) {
 						tableRows[index + i] = "meeting";
 					}

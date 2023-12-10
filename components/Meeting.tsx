@@ -16,7 +16,12 @@ const handleMeetingClick = () => {
 };
 
 function Meeting({ meeting }: MeetingProps) {
-	let meetingsLenght = calcMeetingLength(meeting);
+	let meetingsLenght = calcMeetingLength(
+		meeting.startHour,
+		meeting.startMinute,
+		meeting.endHour,
+		meeting.endMinute
+	);
 
 	return (
 		<td
