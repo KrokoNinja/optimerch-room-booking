@@ -3,20 +3,11 @@
 import { calcMeetingLength } from "@/hooks/calcMeetingLength";
 import { Button } from "@mui/material";
 import MeetingButtons from "./MeetingButtons";
+import { Meetings } from "@/types";
 
 interface TimeSlotGridProps {
-	meetingslots: Meeting;
+	meetingslots: Meetings;
 }
-
-type Meeting =
-	| {
-			startHour: number;
-			startMinute: number;
-			endHour: number;
-			endMinute: number;
-			room: string;
-	  }[]
-	| undefined;
 
 function TimeSlotGrid({ meetingslots }: TimeSlotGridProps) {
 	//TODO: Add meeting length so that all buttons are disabled inside the meetings length

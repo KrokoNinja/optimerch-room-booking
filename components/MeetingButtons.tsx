@@ -1,14 +1,9 @@
 import { calcMeetingLength } from "@/hooks/calcMeetingLength";
+import { singleMeeting } from "@/types";
 import { Button } from "@mui/material";
 
 interface MeetingButtonsProps {
-	meeting: {
-		startHour: number;
-		startMinute: number;
-		endHour: number;
-		endMinute: number;
-		room: string;
-	};
+	meeting: singleMeeting;
 	time: number;
 }
 

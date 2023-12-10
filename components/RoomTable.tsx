@@ -1,17 +1,10 @@
 import { calcMeetingLength } from "@/hooks/calcMeetingLength";
 import Meeting from "./Meeting";
 import FreeRow from "./FreeRow";
+import { Meetings } from "@/types";
 
 interface RoomTableProps {
-	meetings:
-		| {
-				startHour: number;
-				startMinute: number;
-				endHour: number;
-				endMinute: number;
-				room: string;
-		  }[]
-		| undefined;
+	meetings: Meetings;
 	room: string;
 }
 

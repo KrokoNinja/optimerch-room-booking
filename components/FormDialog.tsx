@@ -7,33 +7,16 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { Fragment, useState } from "react";
 import { FormControl, FormHelperText, InputLabel, Menu, MenuItem, Select } from "@mui/material";
 import TimeSlotGrid from "./TimeSlotGrid";
+import { Meetings } from "@/types";
 
 interface FormDialogProps {
-	meetings:
-		| {
-				startHour: number;
-				startMinute: number;
-				endHour: number;
-				endMinute: number;
-				room: string;
-		  }[]
-		| undefined;
+	meetings: Meetings;
 }
-
-type Meeting =
-	| {
-			startHour: number;
-			startMinute: number;
-			endHour: number;
-			endMinute: number;
-			room: string;
-	  }[]
-	| undefined;
 
 export default function FormDialog({ meetings }: FormDialogProps) {
 	const [open, setOpen] = useState(false);
 	const [room, setRoom] = useState("");
-	const [timeSlots, setTimeSlots] = useState({} as Meeting);
+	const [timeSlots, setTimeSlots] = useState({} as Meetings);
 
 	const handleClickOpen = () => {
 		setOpen(true);
