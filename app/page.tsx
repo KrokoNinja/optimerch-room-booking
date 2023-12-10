@@ -42,7 +42,7 @@ export default async function Index() {
 				</div>
 			</nav>
 
-			<FormDialog />
+			<FormDialog meetings={meetings} />
 
 			<div className="flex w-full max-w-5xl">
 				<TimeTable />
