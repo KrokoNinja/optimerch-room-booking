@@ -8,11 +8,13 @@ interface MeetingProps {
 }
 
 const handleMeetingClick = async (meeting : SingleMeeting) => {
+	//TODO: Show DeleteDialog on click to have the user confirm that he wants to delete the meeting
 	const error = await deleteMeeting(meeting);
+	console.log("Id to delete: " + meeting.id);
 	if (error) {
 		console.log(error);
 	}
-	window.location.reload();
+	//window.location.reload();
 };
 
 function Meeting({ meeting }: MeetingProps) {
