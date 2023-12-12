@@ -1,16 +1,16 @@
 import { calcMeetingLength } from "@/hooks/calcMeetingLength";
 import Meeting from "./Meeting";
 import FreeRow from "./FreeRow";
-import { Meetings } from "@/types";
+import { useMeetingsContext } from "@/hooks/context";
 
 interface RoomTableProps {
-	meetings: Meetings;
 	room: string;
 }
 
-function RoomTable({ meetings, room }: RoomTableProps) {
+function RoomTable({ room }: RoomTableProps) {
+	const meetings = useMeetingsContext();
 	const tableRows = new Array(44).fill("");
-	const roomMeetings = meetings?.filter((meeting) => meeting.room == room);
+	const roomMeetings = meetings.filter((meeting) => meeting.room === room);
 
 	tableRows.map((_, index) => {
 		const hour = Math.floor(index / 4) + 7;

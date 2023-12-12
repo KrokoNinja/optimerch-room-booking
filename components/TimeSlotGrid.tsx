@@ -4,32 +4,39 @@ import { calcMeetingLength } from "@/hooks/calcMeetingLength";
 import { Button } from "@mui/material";
 import MeetingButtons from "./MeetingButtons";
 import { Meetings } from "@/types";
+import { useMeetingsContext } from "@/hooks/context";
 
 interface TimeSlotGridProps {
 	meetingslots: Meetings;
+	room: string;
 }
 
-function TimeSlotGrid({ meetingslots }: TimeSlotGridProps) {
-	//TODO: Add meeting length so that all buttons are disabled inside the meetings length
+function TimeSlotGrid({ meetingslots, room }: TimeSlotGridProps) {
+	const meetings = useMeetingsContext();
+
 	return (
 		<div className="grid grid-cols-8">
 			{Array.from({ length: 44 }).map((_, index) => {
-				const hour = Math.floor(index / 4) + 7;
-				const minute = (index % 4) * 15;
-				const time = `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
-				const free = meetingslots?.filter((meeting) => {
-					return meeting.startHour == hour && meeting.startMinute == minute;
+				let hour = Math.floor(index / 4) + 7;
+				let minute = (index % 4) * 15;
+				let time = `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
+				const meeting = meetings?.find((meeting) => {
+					return meeting.room === room && meeting.startHour === hour && meeting.startMinute === minute;
 				});
-				if (free && free.length > 0) {
-					index += calcMeetingLength(
-						free[0].startHour,
-						free[0].startMinute,
-						free[0].endHour,
-						free[0].endMinute
-					);
-					return <MeetingButtons key={time} meeting={free[0]} time={hour * 60 + minute} />;
+				if (meeting) {
+					const meetingLength = calcMeetingLength(meeting.startHour, meeting.startMinute, meeting.endHour, meeting.endMinute);
+					index += meetingLength - 1;
+					return Array.from({ length: meetingLength }).map((_, i) => (
+						<Button key={time} disabled>
+							{time}
+						</Button>
+					));
 				} else {
-					return <Button key={time}>{time}</Button>;
+					return (
+						<Button key={time}>
+							{time}
+						</Button>
+					);
 				}
 			})}
 		</div>

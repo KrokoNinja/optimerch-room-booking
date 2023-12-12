@@ -64,7 +64,7 @@ export default function FormDialog({ meetings }: FormDialogProps) {
 						</Select>
 						<FormHelperText>Required</FormHelperText>
 					</FormControl>
-					{room ? <TimeSlotGrid meetingslots={timeSlots} /> : <div></div>}
+					{room ? <TimeSlotGrid meetingslots={timeSlots} room={room} /> : <div></div>}
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={handleClose}>Cancel</Button>

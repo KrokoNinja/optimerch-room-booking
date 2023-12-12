@@ -1,5 +1,7 @@
 import { GeistSans } from 'geist/font/sans'
 import './globals.css'
+import { MeetingsContext } from '@/hooks/context'
+import AuthButton from '@/components/AuthButton'
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -31,9 +33,28 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-background text-foreground">
+      <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
+				<div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
+					<AuthButton />
+				</div>
+			</nav>
         <main className="min-h-screen flex flex-col items-center">
           {children}
         </main>
+
+        <footer className="w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs">
+          <p>
+            Powered by{" "}
+            <a
+              href="https://www.optimerch.de/"
+              target="_blank"
+              className="font-bold hover:underline"
+              rel="noreferrer"
+            >
+              Optimerch GmbH
+            </a>
+          </p>
+        </footer>
       </body>
     </html>
   )

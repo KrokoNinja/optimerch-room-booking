@@ -1,8 +1,8 @@
 export type Meetings =
-	| singleMeeting[]
+	| SingleMeeting[]
 	| undefined;
 
-export type singleMeeting = {
+export type SingleMeeting = {
     startHour: number;
     startMinute: number;
     endHour: number;
