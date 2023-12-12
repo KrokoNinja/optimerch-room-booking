@@ -8,4 +8,5 @@ export type SingleMeeting = {
     endHour: number;
     endMinute: number;
     room: string;
+    id: number;
 };

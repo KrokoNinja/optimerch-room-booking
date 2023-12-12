@@ -1,28 +1,38 @@
 "use client";
 
+import { useMeetingsContext } from "@/hooks/context";
 import { useState } from "react";
+import FreeRowDialog from "./FreeRowDialog";
 
 interface FreeRowProps {
 	time: number;
+	room: string;
 }
 
-function onHover(hour: number, minute: number) {
-	return (
-		<p className="bg-slate-200 rounded-md text-black cursor-default">
-			Start: {hour.toString().padStart(2, "0")}:{minute.toString().padStart(2, "0")}
-		</p>
-	);
-}
-
-function FreeRow({ time }: FreeRowProps) {
+function FreeRow({ time, room }: FreeRowProps) {
+	const [open, setOpen] = useState(false);
+	const [hover, setHover] = useState(false);
+	
+	const meetings = useMeetingsContext();
 	const hour = Math.floor(time / 4) + 7;
 	const minute = (time % 4) * 15;
 
-	const [hover, setHover] = useState(false);
+
+	const handleClick = () => {
+		setOpen(!open);
+		setHover(false);
+	};
+
+	function onHover(hour: number, minute: number) {
+        return (
+            <p className="cursor-pointer" onClick={handleClick}>Start: {hour.toString().padStart(2, "0")}:{minute.toString().padStart(2, "0")}</p>
+        );
+    }
 
 	return (
 		<td onMouseOver={() => setHover(true)} onMouseLeave={() => setHover(false)}>
 			{hover ? onHover(hour, minute) : ""}
+			<FreeRowDialog rowRoom={room} isOpen={open} handleClick={handleClick} />
 		</td>
 	);
 }

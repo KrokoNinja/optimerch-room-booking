@@ -1,18 +1,18 @@
 "use client";
 import { calcMeetingLength } from "@/hooks/calcMeetingLength";
+import { deleteMeeting } from "@/hooks/deleteMeeting";
+import { SingleMeeting } from "@/types";
 
 interface MeetingProps {
-	meeting: {
-		startHour: number;
-		startMinute: number;
-		endHour: number;
-		endMinute: number;
-		room: string;
-	};
+	meeting: SingleMeeting;
 }
 
-const handleMeetingClick = () => {
-	console.log("click");
+const handleMeetingClick = async (meeting : SingleMeeting) => {
+	const error = await deleteMeeting(meeting);
+	if (error) {
+		console.log(error);
+	}
+	window.location.reload();
 };
 
 function Meeting({ meeting }: MeetingProps) {
@@ -27,7 +27,7 @@ function Meeting({ meeting }: MeetingProps) {
 		<td
 			className="bg-red-400 rounded-md cursor-pointer"
 			rowSpan={meetingsLenght}
-			onClick={() => handleMeetingClick()}
+			onClick={() => handleMeetingClick(meeting)}
 		>
 			Meeting <br />
 			{meeting.startHour}:{meeting.startMinute.toString().padStart(2, "0")} - {meeting.endHour}:

@@ -2,42 +2,47 @@
 
 import { calcMeetingLength } from "@/hooks/calcMeetingLength";
 import { Button } from "@mui/material";
-import MeetingButtons from "./MeetingButtons";
-import { Meetings } from "@/types";
 import { useMeetingsContext } from "@/hooks/context";
 
 interface TimeSlotGridProps {
-	meetingslots: Meetings;
 	room: string;
 }
 
-function TimeSlotGrid({ meetingslots, room }: TimeSlotGridProps) {
+function TimeSlotGrid({ room }: TimeSlotGridProps) {
 	const meetings = useMeetingsContext();
+	const buttons = new Array(44).fill("");
+	const roomMeetings = meetings.filter((meeting) => meeting.room === room);
+
+	buttons.map((_, index) => {
+		const hour = Math.floor(index / 4) + 7;
+		const minute = (index % 4) * 15;
+		if (roomMeetings) {
+			for (let i = 0; i < roomMeetings.length; i++) {
+				if (hour + minute === roomMeetings[i].startHour + roomMeetings[i].startMinute) {
+					buttons[index] = roomMeetings[i];
+					let meetingsLenght = calcMeetingLength(
+						roomMeetings[i].startHour,
+						roomMeetings[i].startMinute,
+						roomMeetings[i].endHour,
+						roomMeetings[i].endMinute
+					);
+					for (let i = 1; i < meetingsLenght; i++) {
+						buttons[index + i] = "meeting";
+					}
+				}
+			}
+		}
+	});
 
 	return (
 		<div className="grid grid-cols-8">
 			{Array.from({ length: 44 }).map((_, index) => {
-				let hour = Math.floor(index / 4) + 7;
-				let minute = (index % 4) * 15;
-				let time = `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
-				const meeting = meetings?.find((meeting) => {
-					return meeting.room === room && meeting.startHour === hour && meeting.startMinute === minute;
-				});
-				if (meeting) {
-					const meetingLength = calcMeetingLength(meeting.startHour, meeting.startMinute, meeting.endHour, meeting.endMinute);
-					index += meetingLength - 1;
-					return Array.from({ length: meetingLength }).map((_, i) => (
-						<Button key={time} disabled>
-							{time}
-						</Button>
-					));
-				} else {
-					return (
-						<Button key={time}>
-							{time}
-						</Button>
-					);
-				}
+				const hour = Math.floor(index / 4) + 7;
+				const minute = (index % 4) * 15;
+				const time = `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
+				return (
+					<Button key={time} disabled={buttons[index] !== ""}>{time}</Button>
+				);
 			})}
 		</div>
 	);

@@ -4,46 +4,19 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { Fragment, useState } from "react";
-import { FormControl, FormHelperText, InputLabel, Menu, MenuItem, Select } from "@mui/material";
+import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from "@mui/material";
 import TimeSlotGrid from "./TimeSlotGrid";
-import { Meetings } from "@/types";
 
 interface FormDialogProps {
-	meetings: Meetings;
+	handleClose: () => void;
+	open: boolean;
+	changeRoom: (room: string) => void;
+	room: string;
 }
 
-export default function FormDialog({ meetings }: FormDialogProps) {
-	const [open, setOpen] = useState(false);
-	const [room, setRoom] = useState("");
-	const [timeSlots, setTimeSlots] = useState({} as Meetings);
-
-	const handleClickOpen = () => {
-		setOpen(true);
-	};
-
-	const handleClose = () => {
-		setOpen(false);
-		setRoom("");
-	};
-
-	const filterMeetingsByRoom = (room: string) => {
-		return meetings?.filter((meeting) => meeting.room == room);
-	};
-
-	const changeRoom = (room: string) => {
-		setRoom(room);
-		setTimeSlots(filterMeetingsByRoom(room));
-	};
-
+export default function FormDialog({ handleClose, open, changeRoom, room }: FormDialogProps) {
 	return (
-		<Fragment>
-			<div className="fixed bottom-10 right-10">
-				<Button variant="outlined" onClick={handleClickOpen}>
-					New Meeting
-				</Button>
-			</div>
-			<Dialog open={open} onClose={handleClose}>
+		<Dialog open={open} onClose={handleClose}>
 				<DialogTitle>Create New Meeting</DialogTitle>
 				<DialogContent>
 					<FormControl required sx={{ m: 1, minWidth: 120 }}>
@@ -64,13 +37,12 @@ export default function FormDialog({ meetings }: FormDialogProps) {
 						</Select>
 						<FormHelperText>Required</FormHelperText>
 					</FormControl>
-					{room ? <TimeSlotGrid meetingslots={timeSlots} room={room} /> : <div></div>}
+					{room ? <TimeSlotGrid room={room} /> : <div></div>}
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={handleClose}>Cancel</Button>
 					<Button onClick={handleClose}>Subscribe</Button>
 				</DialogActions>
 			</Dialog>
-		</Fragment>
 	);
 }

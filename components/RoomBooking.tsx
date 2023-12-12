@@ -1,11 +1,11 @@
 "use client";
 import { MeetingsContext } from "@/hooks/context"
-import FormDialog from "./FormDialog";
 import TimeTable from "./TimeTable";
 import RoomTable from "./RoomTable";
 import { useEffect, useState } from "react";
 import { Meetings } from "@/types";
 import { getMeetings } from "@/actions/getMeetings";
+import NewMeetingDialog from "./NewMeetingDialog";
 
 function RoomBooking() {
 
@@ -21,7 +21,7 @@ function RoomBooking() {
 
   return (
     <MeetingsContext.Provider value={meetings}>
-        <FormDialog meetings={meetings} />
+        <NewMeetingDialog meetings={meetings} />
         <div className="flex w-full max-w-5xl">
             <TimeTable />
             <RoomTable room="aplerbeck" />

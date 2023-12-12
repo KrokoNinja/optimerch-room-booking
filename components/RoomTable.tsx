@@ -49,7 +49,7 @@ function RoomTable({ room }: RoomTableProps) {
 							) : tableRows[index] === "meeting" ? (
 								<></>
 							) : (
-								<FreeRow time={index} />
+								<FreeRow time={index} room={room} />
 							)}
 						</tr>
 					);

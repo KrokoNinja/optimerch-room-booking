@@ -13,6 +13,7 @@ export async function getData() {
 			endHour: new Date(meeting.end).getHours(),
 			endMinute: new Date(meeting.end).getMinutes(),
 			room: meeting.room,
+			id: meeting.id,
 		};
 	}, []);
 
