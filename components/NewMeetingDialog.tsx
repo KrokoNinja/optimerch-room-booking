@@ -1,20 +1,18 @@
 "use client";
 import Button from "@mui/material/Button";
 import { Fragment, useState } from "react";
-import { Meetings } from "@/types";
 import FormDialog from "./FormDialog";
+import { TimeSlotContext } from "@/hooks/context";
+import getUserMail from "@/hooks/getUserMail";
+import { redirectToLogin } from "@/hooks/createMeeting";
 
-interface FormDialogProps {
-	meetings: Meetings;
-}
-
-export default function NewMeetingDialog({ meetings }: FormDialogProps) {
+export default function NewMeetingDialog() {
 	const [open, setOpen] = useState(false);
 	const [room, setRoom] = useState("");
-	const [timeSlots, setTimeSlots] = useState({} as Meetings);
 
-	const handleClickOpen = () => {
-		setOpen(true);
+	const handleClickOpen = async () => {
+		const userMail = await getUserMail();
+		userMail ? setOpen(true) : redirectToLogin();
 	};
 
 	const handleClose = () => {
@@ -22,13 +20,8 @@ export default function NewMeetingDialog({ meetings }: FormDialogProps) {
 		setRoom("");
 	};
 
-	const filterMeetingsByRoom = (room: string) => {
-		return meetings?.filter((meeting) => meeting.room == room);
-	};
-
 	const changeRoom = (room: string) => {
 		setRoom(room);
-		setTimeSlots(filterMeetingsByRoom(room));
 	};
 
 	return (
@@ -38,7 +31,9 @@ export default function NewMeetingDialog({ meetings }: FormDialogProps) {
 					New Meeting
 				</Button>
 			</div>
-			<FormDialog open={open} handleClose={handleClose} changeRoom={changeRoom} room={room} />
+			<TimeSlotContext.Provider value={""}>
+				<FormDialog open={open} handleClose={handleClose} changeRoom={changeRoom} room={room} />
+			</TimeSlotContext.Provider>
 		</Fragment>
 	);
 }

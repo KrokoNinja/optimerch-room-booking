@@ -1,7 +1,6 @@
 "use server"
 import { SingleMeeting } from "@/types";
 import { createClient } from "@/utils/supabase/server";
-import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
 const cookieStore = cookies();

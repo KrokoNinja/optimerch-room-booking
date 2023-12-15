@@ -1,7 +1,3 @@
-import AuthButton from "../components/AuthButton";
-import TimeTable from "@/components/TimeTable";
-import RoomTable from "@/components/RoomTable";
-import FormDialog from "@/components/FormDialog";
 import RoomBooking from "@/components/RoomBooking";
 
 export default function Index() {

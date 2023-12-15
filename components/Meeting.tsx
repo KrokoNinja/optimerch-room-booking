@@ -1,6 +1,7 @@
 "use client";
 import { calcMeetingLength } from "@/hooks/calcMeetingLength";
 import { deleteMeeting } from "@/hooks/deleteMeeting";
+import getUpdate from "@/hooks/getUpdate";
 import { SingleMeeting } from "@/types";
 
 interface MeetingProps {
@@ -14,7 +15,7 @@ const handleMeetingClick = async (meeting : SingleMeeting) => {
 	if (error) {
 		console.log(error);
 	}
-	//window.location.reload();
+	getUpdate(true);
 };
 
 function Meeting({ meeting }: MeetingProps) {
@@ -31,7 +32,7 @@ function Meeting({ meeting }: MeetingProps) {
 			rowSpan={meetingsLenght}
 			onClick={() => handleMeetingClick(meeting)}
 		>
-			Meeting <br />
+			Meeting {meetingsLenght > 1 ? <br /> : ""}
 			{meeting.startHour}:{meeting.startMinute.toString().padStart(2, "0")} - {meeting.endHour}:
 			{meeting.endMinute.toString().padStart(2, "0")}
 		</td>

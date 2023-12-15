@@ -1,6 +1,5 @@
 import { GeistSans } from 'geist/font/sans'
 import './globals.css'
-import { MeetingsContext } from '@/hooks/context'
 import AuthButton from '@/components/AuthButton'
 
 const defaultUrl = process.env.VERCEL_URL

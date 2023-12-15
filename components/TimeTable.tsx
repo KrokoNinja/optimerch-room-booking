@@ -13,7 +13,7 @@ function TimeTable() {
 					const time = `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
 					return (
 						<tr key={index} className="border-y last:border-none">
-							<td>{time}</td>
+							<td className="cursor-default">{time}</td>
 						</tr>
 					);
 				})}

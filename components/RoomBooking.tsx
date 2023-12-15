@@ -21,7 +21,7 @@ function RoomBooking() {
 
   return (
     <MeetingsContext.Provider value={meetings}>
-        <NewMeetingDialog meetings={meetings} />
+        <NewMeetingDialog />
         <div className="flex w-full max-w-5xl">
             <TimeTable />
             <RoomTable room="aplerbeck" />

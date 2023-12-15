@@ -1,6 +1,6 @@
 "use client";
 
-import { useMeetingsContext } from "@/hooks/context";
+import { TimeSlotContext, useMeetingsContext } from "@/hooks/context";
 import { useState } from "react";
 import FreeRowDialog from "./FreeRowDialog";
 
@@ -16,6 +16,7 @@ function FreeRow({ time, room }: FreeRowProps) {
 	const meetings = useMeetingsContext();
 	const hour = Math.floor(time / 4) + 7;
 	const minute = (time % 4) * 15;
+	const timeStr = hour.toString().padStart(2, "0") + ":" + minute.toString().padStart(2, "0");
 
 
 	const handleClick = () => {
@@ -32,7 +33,9 @@ function FreeRow({ time, room }: FreeRowProps) {
 	return (
 		<td onMouseOver={() => setHover(true)} onMouseLeave={() => setHover(false)}>
 			{hover ? onHover(hour, minute) : ""}
-			<FreeRowDialog rowRoom={room} isOpen={open} handleClick={handleClick} />
+			<TimeSlotContext.Provider value={timeStr}>
+				<FreeRowDialog rowRoom={room} isOpen={open} handleClick={handleClick} />
+			</TimeSlotContext.Provider>
 		</td>
 	);
 }
