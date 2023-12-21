@@ -3,6 +3,8 @@
 import { TimeSlotContext, useMeetingsContext } from "@/hooks/context";
 import { useState } from "react";
 import FreeRowDialog from "./FreeRowDialog";
+import getUser from "@/hooks/getUser";
+import { redirectToLogin } from "@/hooks/createMeeting";
 
 interface FreeRowProps {
 	time: number;
@@ -19,8 +21,9 @@ function FreeRow({ time, room }: FreeRowProps) {
 	const timeStr = hour.toString().padStart(2, "0") + ":" + minute.toString().padStart(2, "0");
 
 
-	const handleClick = () => {
-		setOpen(!open);
+	const handleClick = async () => {
+		const user = await getUser();
+		user ? setOpen(!open) : redirectToLogin();
 		setHover(false);
 	};
 

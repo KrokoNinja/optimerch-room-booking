@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import { Fragment, useState } from "react";
 import FormDialog from "./FormDialog";
 import { TimeSlotContext } from "@/hooks/context";
-import getUserMail from "@/hooks/getUserMail";
+import getUser from "@/hooks/getUser";
 import { redirectToLogin } from "@/hooks/createMeeting";
 
 export default function NewMeetingDialog() {
@@ -11,8 +11,8 @@ export default function NewMeetingDialog() {
 	const [room, setRoom] = useState("");
 
 	const handleClickOpen = async () => {
-		const userMail = await getUserMail();
-		userMail ? setOpen(true) : redirectToLogin();
+		const user = await getUser();
+		user ? setOpen(true) : redirectToLogin();
 	};
 
 	const handleClose = () => {

@@ -3,22 +3,32 @@ import { calcMeetingLength } from "@/hooks/calcMeetingLength";
 import { deleteMeeting } from "@/hooks/deleteMeeting";
 import getUpdate from "@/hooks/getUpdate";
 import { SingleMeeting } from "@/types";
+import DeleteDialog from "./DeleteDialog";
+import { useState } from "react";
+import getUser from "@/hooks/getUser";
+import { redirectToLogin } from "@/hooks/createMeeting";
 
 interface MeetingProps {
 	meeting: SingleMeeting;
 }
 
-const handleMeetingClick = async (meeting : SingleMeeting) => {
-	//TODO: Show DeleteDialog on click to have the user confirm that he wants to delete the meeting
-	const error = await deleteMeeting(meeting);
-	console.log("Id to delete: " + meeting.id);
-	if (error) {
-		console.log(error);
-	}
-	getUpdate(true);
-};
-
 function Meeting({ meeting }: MeetingProps) {
+
+	const [open, setOpen] = useState(false);
+
+	const handleClose = () => {
+		setOpen(false);
+	}
+
+	const handleOpen = async () => {
+		const user = await getUser();
+		if (user) {
+			user == meeting.user ? setOpen(true) : alert("You can't delete a meeting you didn't create");
+		} else {
+			redirectToLogin();
+		}
+	}
+
 	let meetingsLenght = calcMeetingLength(
 		meeting.startHour,
 		meeting.startMinute,
@@ -27,15 +37,18 @@ function Meeting({ meeting }: MeetingProps) {
 	);
 
 	return (
-		<td
-			className="bg-red-400 rounded-md cursor-pointer"
-			rowSpan={meetingsLenght}
-			onClick={() => handleMeetingClick(meeting)}
-		>
-			Meeting {meetingsLenght > 1 ? <br /> : ""}
-			{meeting.startHour}:{meeting.startMinute.toString().padStart(2, "0")} - {meeting.endHour}:
-			{meeting.endMinute.toString().padStart(2, "0")}
-		</td>
+		<>
+			<td
+				className="bg-red-400 rounded-md cursor-pointer"
+				rowSpan={meetingsLenght}
+				onClick={handleOpen}
+			>
+				Meeting {meetingsLenght > 1 ? <br /> : ""}
+				{meeting.startHour}:{meeting.startMinute.toString().padStart(2, "0")} - {meeting.endHour}:
+				{meeting.endMinute.toString().padStart(2, "0")}
+			</td>
+			<DeleteDialog room={meeting.room} handleClose={handleClose} open={open} meeting={meeting} />
+		</>
 	);
 }
 

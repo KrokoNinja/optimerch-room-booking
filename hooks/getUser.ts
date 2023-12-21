@@ -2,7 +2,7 @@
 import { createClient } from "@/utils/supabase/server"
 import { cookies } from "next/headers"
 
-export default async function getUserMail() {
+export default async function getUser() {
     const cookieStore = cookies()
     const supabase = createClient(cookieStore)
 
@@ -10,5 +10,5 @@ export default async function getUserMail() {
         data: { user },
     } = await supabase.auth.getUser()
     
-    return user?.email;
+    return user?.id;
 }
