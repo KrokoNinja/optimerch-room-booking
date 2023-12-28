@@ -7,6 +7,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from "@mui/material";
 import TimeSlotGrid from "./TimeSlotGrid";
 import { useState } from "react";
+import { createMeeting } from "@/hooks/createMeeting";
 
 interface FormDialogProps {
 	handleClose: () => void;
@@ -23,9 +24,22 @@ export default function FormDialog({ handleClose, open, changeRoom, room }: Form
 		setSelected(time);
 	};
 
-	const handleSave = () => {
+	const handleSave = async (start : string, end : string, room : string) => {
+		const startDate = new Date();
+		const endDate = new Date();
+		const startHour = parseInt(start.split(":")[0]);
+		const startMinute = parseInt(start.split(":")[1]);
+		const endHour = parseInt(end.split(":")[0]);
+		const endMinute = parseInt(end.split(":")[1]);
+		startDate.setHours(startHour, startMinute);
+		endDate.setHours(endHour, endMinute);
+		const error = await createMeeting(startDate, endDate, room);
 		handleClose();
 	};
+
+	const save = () => {
+		handleSave(selected, selected, room);
+	}
 
 	return (
 		<Dialog open={open} onClose={handleClose}>
@@ -49,11 +63,11 @@ export default function FormDialog({ handleClose, open, changeRoom, room }: Form
 						</Select>
 						<FormHelperText>Required</FormHelperText>
 					</FormControl>
-					{room ? <TimeSlotGrid room={room} handleSelect={handleSelected} selected={selected} /> : <div></div>}
+					{room ? <TimeSlotGrid room={room} handleSelected={handleSelected} selected={selected} /> : <div></div>}
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={handleClose}>Cancel</Button>
-					<Button onClick={handleSave}>Save</Button>
+					<Button onClick={save}>Save</Button>
 				</DialogActions>
 			</Dialog>
 	);

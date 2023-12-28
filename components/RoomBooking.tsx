@@ -15,6 +15,7 @@ function RoomBooking() {
     async function fetchMeetings() {
         const meetings = await getMeetings();
         setMeetings(meetings);
+        console.log(meetings)
     }
     fetchMeetings();
  }, [])

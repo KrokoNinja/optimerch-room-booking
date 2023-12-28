@@ -14,7 +14,7 @@ export async function getData() {
 			endMinute: new Date(meeting.end).getMinutes(),
 			room: meeting.room,
 			id: meeting.id,
-			user: meeting.user,
+			user: meeting.user_id,
 		};
 	}, []);
 

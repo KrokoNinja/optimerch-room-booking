@@ -7,18 +7,18 @@ import { useEffect } from "react";
 
 interface TimeSlotGridProps {
 	room: string;
-	handleSelect: (time: string) => void;
+	handleSelected: (time: string) => void;
 	selected: string;
 }
 
-function TimeSlotGrid({ room, handleSelect, selected }: TimeSlotGridProps) {
+function TimeSlotGrid({ room, handleSelected, selected }: TimeSlotGridProps) {
 	const meetings = useMeetingsContext();
 	const timeSlot = useTimeSlotContext();
 	const buttons = new Array(44).fill("");
 	const roomMeetings = meetings.filter((meeting) => meeting.room === room);
 	
 	useEffect(() => {
-		handleSelect(timeSlot);
+		handleSelected(timeSlot);
 	}, [timeSlot]);
 
 	buttons.map((_, index) => {
@@ -43,7 +43,7 @@ function TimeSlotGrid({ room, handleSelect, selected }: TimeSlotGridProps) {
 	});
 
 	const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-		handleSelect(e.currentTarget.textContent || "");
+		handleSelected(e.currentTarget.textContent || "");
 	}
 
 	if (selected) {
@@ -55,7 +55,7 @@ function TimeSlotGrid({ room, handleSelect, selected }: TimeSlotGridProps) {
 		return (
 			<>
 				<p>Select End of Meeting</p>
-				<div className="grid grid-cols-8" onClick={() => handleSelect("")}>
+				<div className="grid grid-cols-8" onClick={() => handleSelected("")}>
 					{
 						Array.from({ length: availableSlots }).map((_, index) => {
 							const time = `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
