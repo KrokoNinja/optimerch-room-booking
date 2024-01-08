@@ -8,7 +8,7 @@ import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from "@mui/
 import TimeSlotGrid from "./TimeSlotGrid";
 import { useState } from "react";
 import { createMeeting } from "@/hooks/createMeeting";
-import { revalidatePath } from "next/cache";
+import getUpdate from "@/hooks/getUpdate";
 
 interface FormDialogProps {
 	handleClose: () => void;
@@ -39,9 +39,10 @@ export default function FormDialog({ handleClose, open, changeRoom, room }: Form
 		if (error) {
 			alert(error.message);
 		}
+		handleClose();
 		setSelected("");
 		setEndSelected("");
-		handleClose();
+		getUpdate(true);
 	};
 
 	const save = () => {
