@@ -3,15 +3,17 @@
 import { calcMeetingLength } from "@/hooks/calcMeetingLength";
 import { Button } from "@mui/material";
 import { useMeetingsContext, useTimeSlotContext } from "@/hooks/context";
-import { useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 
 interface TimeSlotGridProps {
 	room: string;
 	handleSelected: (time: string) => void;
 	selected: string;
+	endSelected: string;
+	setEndSelected: Dispatch<SetStateAction<string>>
 }
 
-function TimeSlotGrid({ room, handleSelected, selected }: TimeSlotGridProps) {
+function TimeSlotGrid({ room, handleSelected, selected, endSelected, setEndSelected }: TimeSlotGridProps) {
 	const meetings = useMeetingsContext();
 	const timeSlot = useTimeSlotContext();
 	const buttons = new Array(44).fill("");
@@ -45,8 +47,21 @@ function TimeSlotGrid({ room, handleSelected, selected }: TimeSlotGridProps) {
 	const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
 		handleSelected(e.currentTarget.textContent || "");
 	}
-
-	if (selected) {
+	if (selected && endSelected) {
+		return (
+			<>
+				<div className="flex flex-row items-center gap-3">
+					<p>Start of Meeting: </p>
+					<Button variant="outlined" onClick={() => handleSelected("")}>{selected}</Button>
+				</div>
+				<div className="flex flex-row items-center gap-3">
+					<p>End of Meeting: </p>
+					<Button variant="outlined" onClick={() => setEndSelected("")}>{endSelected}</Button>
+				</div>
+			</>
+		)
+	}
+	else if (selected) {
 		let hour = parseInt(selected.split(":")[0]);
 		let minute = parseInt(selected.split(":")[1]);
 		const buttonIndex = (hour - 7) * 4 + minute / 15;
@@ -54,8 +69,12 @@ function TimeSlotGrid({ room, handleSelected, selected }: TimeSlotGridProps) {
 		const availableSlots = meetingAfterIndex === -1 ? 44 - buttonIndex : meetingAfterIndex - buttonIndex;
 		return (
 			<>
+				<div className="flex flex-row items-center gap-3">
+					<p>Start of Meeting: </p>
+					<Button variant="outlined" onClick={() => handleSelected("")}>{selected}</Button>
+				</div>
 				<p>Select End of Meeting</p>
-				<div className="grid grid-cols-8" onClick={() => handleSelected("")}>
+				<div className="grid grid-cols-8">
 					{
 						Array.from({ length: availableSlots }).map((_, index) => {
 							const time = `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
@@ -64,9 +83,11 @@ function TimeSlotGrid({ room, handleSelected, selected }: TimeSlotGridProps) {
 								minute = 0;
 								hour++;
 							}
-							return (
-								<Button key={time} variant="outlined" className="first:bg-slate-600">{time}</Button>
-							);
+							if (time !== selected) {
+								return (
+									<Button key={time} variant="outlined" onClick={() => setEndSelected(time)}>{time}</Button>
+								);
+							}
 						})
 					}
 				</div>

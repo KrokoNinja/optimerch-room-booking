@@ -8,6 +8,7 @@ import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from "@mui/
 import TimeSlotGrid from "./TimeSlotGrid";
 import { useState } from "react";
 import { createMeeting } from "@/hooks/createMeeting";
+import { revalidatePath } from "next/cache";
 
 interface FormDialogProps {
 	handleClose: () => void;
@@ -19,6 +20,7 @@ interface FormDialogProps {
 export default function FormDialog({ handleClose, open, changeRoom, room }: FormDialogProps) {
 
 	const [selected, setSelected] = useState("");
+	const [endSelected, setEndSelected] = useState("");
 
 	const handleSelected = (time: string) => {
 		setSelected(time);
@@ -34,11 +36,16 @@ export default function FormDialog({ handleClose, open, changeRoom, room }: Form
 		startDate.setHours(startHour, startMinute);
 		endDate.setHours(endHour, endMinute);
 		const error = await createMeeting(startDate, endDate, room);
+		if (error) {
+			alert(error.message);
+		}
+		setSelected("");
+		setEndSelected("");
 		handleClose();
 	};
 
 	const save = () => {
-		handleSave(selected, selected, room);
+		handleSave(selected, endSelected, room);
 	}
 
 	return (
@@ -63,7 +70,7 @@ export default function FormDialog({ handleClose, open, changeRoom, room }: Form
 						</Select>
 						<FormHelperText>Required</FormHelperText>
 					</FormControl>
-					{room ? <TimeSlotGrid room={room} handleSelected={handleSelected} selected={selected} /> : <div></div>}
+					{room ? <TimeSlotGrid room={room} handleSelected={handleSelected} selected={selected} endSelected={endSelected} setEndSelected={setEndSelected} /> : <div></div>}
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={handleClose}>Cancel</Button>
