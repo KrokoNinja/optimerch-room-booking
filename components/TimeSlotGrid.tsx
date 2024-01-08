@@ -77,13 +77,22 @@ function TimeSlotGrid({ room, handleSelected, selected, endSelected, setEndSelec
 				<div className="grid grid-cols-8">
 					{
 						Array.from({ length: availableSlots }).map((_, index) => {
-							const time = `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
 							minute += 15;
 							if (minute === 60) {
 								minute = 0;
 								hour++;
 							}
-							if (time !== selected) {
+							const time = `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
+							if (availableSlots === 1) {
+								const time = `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
+								minute += 15;
+								if (minute === 60) {
+									minute = 0;
+									hour++;
+								}
+								setEndSelected(time);
+							}
+							else if (time !== selected) {
 								return (
 									<Button key={time} variant="outlined" onClick={() => setEndSelected(time)}>{time}</Button>
 								);
