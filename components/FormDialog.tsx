@@ -4,7 +4,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from "@mui/material";
+import { FormControl, FormHelperText, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import TimeSlotGrid from "./TimeSlotGrid";
 import { useState } from "react";
 import { createMeeting } from "@/hooks/createMeeting";
@@ -40,27 +40,33 @@ export default function FormDialog({ handleClose, open, changeRoom, room }: Form
 			alert(error.message);
 		}
 		handleClose();
+		getUpdate(true);
 		setSelected("");
 		setEndSelected("");
-		getUpdate(true);
 	};
 
 	const save = () => {
 		handleSave(selected, endSelected, room);
 	}
 
+	const onRoomChange = (e: SelectChangeEvent<string>) => {
+		changeRoom(e.target.value as string);
+		setSelected("");
+		setEndSelected("");
+	}
+
 	return (
 		<Dialog open={open} onClose={handleClose}>
 				<DialogTitle>Create New Meeting</DialogTitle>
 				<DialogContent>
-					<FormControl required sx={{ m: 1, minWidth: 120 }}>
+					<FormControl required sx={{ m: 1, minWidth: 240 }}>
 						<InputLabel id="demo-simple-select-required-label">Room</InputLabel>
 						<Select
 							labelId="demo-simple-select-required-label"
 							id="demo-simple-select-required"
 							value={room}
 							label="Room *"
-							onChange={(e) => changeRoom(e.target.value)}
+							onChange={(e) => onRoomChange(e)}
 						>
 							<MenuItem value="">
 								<em>Select Room</em>

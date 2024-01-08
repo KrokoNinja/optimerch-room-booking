@@ -50,11 +50,11 @@ function TimeSlotGrid({ room, handleSelected, selected, endSelected, setEndSelec
 	if (selected && endSelected) {
 		return (
 			<>
-				<div className="flex flex-row items-center gap-3">
+				<div className="flex flex-row items-center justify-between gap-3">
 					<p>Start of Meeting: </p>
 					<Button variant="outlined" onClick={() => handleSelected("")}>{selected}</Button>
 				</div>
-				<div className="flex flex-row items-center gap-3">
+				<div className="flex flex-row items-center justify-between gap-3">
 					<p>End of Meeting: </p>
 					<Button variant="outlined" onClick={() => setEndSelected("")}>{endSelected}</Button>
 				</div>
