@@ -1,6 +1,6 @@
 "use client";
 
-import { TimeSlotContext, useMeetingsContext } from "@/hooks/context";
+import { TimeSlotContext } from "@/hooks/context";
 import { useState } from "react";
 import FreeRowDialog from "./FreeRowDialog";
 import getUser from "@/hooks/getUser";
@@ -14,8 +14,6 @@ interface FreeRowProps {
 function FreeRow({ time, room }: FreeRowProps) {
 	const [open, setOpen] = useState(false);
 	const [hover, setHover] = useState(false);
-	
-	const meetings = useMeetingsContext();
 	const hour = Math.floor(time / 4) + 7;
 	const minute = (time % 4) * 15;
 	const timeStr = hour.toString().padStart(2, "0") + ":" + minute.toString().padStart(2, "0");

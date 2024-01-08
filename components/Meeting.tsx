@@ -1,7 +1,5 @@
 "use client";
 import { calcMeetingLength } from "@/hooks/calcMeetingLength";
-import { deleteMeeting } from "@/hooks/deleteMeeting";
-import getUpdate from "@/hooks/getUpdate";
 import { SingleMeeting } from "@/types";
 import DeleteDialog from "./DeleteDialog";
 import { useState } from "react";
