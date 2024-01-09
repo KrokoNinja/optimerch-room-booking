@@ -10,7 +10,7 @@ interface MeetingProps {
 	meeting: SingleMeeting;
 }
 
-function Meeting({ meeting }: MeetingProps) {
+export default function Meeting({ meeting }: MeetingProps) {
 
 	const [open, setOpen] = useState(false);
 
@@ -49,5 +49,3 @@ function Meeting({ meeting }: MeetingProps) {
 		</>
 	);
 }
-
-export default Meeting;
