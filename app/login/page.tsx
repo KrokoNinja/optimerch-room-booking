@@ -16,10 +16,6 @@ export default function Login({
     const cookieStore = cookies()
     const supabase = createClient(cookieStore)
 
-    if (supabase.auth.getUser() !== null) {
-      return redirect('/')
-    }
-
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,

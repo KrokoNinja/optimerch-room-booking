@@ -37,7 +37,7 @@ export default function Meeting({ meeting }: MeetingProps) {
 	return (
 		<>
 			<td
-				className="bg-red-400 rounded-md cursor-pointer"
+				className="bg-meeting text-meeting-foreground rounded-md cursor-pointer"
 				rowSpan={meetingsLenght}
 				onClick={handleOpen}
 			>
