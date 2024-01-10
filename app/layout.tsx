@@ -35,7 +35,6 @@ export default function RootLayout({
       <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
 				<div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
 					<AuthButton />
-          //!TODO write getDate hook to display date here and get the date to filter the meetings by date
           <p>{new Date().getDate().toString().padStart(2, "0")}.{(new Date().getMonth() + 1).toString().padStart(2, "0")}.{new Date().getFullYear().toString()}</p>
 				</div>
 			</nav>
