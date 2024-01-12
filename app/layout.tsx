@@ -1,6 +1,7 @@
 import { GeistSans } from 'geist/font/sans'
 import './globals.css'
 import AuthButton from '@/components/AuthButton'
+import DatePick from '@/components/DatePick'
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -36,6 +37,7 @@ export default function RootLayout({
 				<div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
 					<AuthButton />
           <p>{new Date().getDate().toString().padStart(2, "0")}.{(new Date().getMonth() + 1).toString().padStart(2, "0")}.{new Date().getFullYear().toString()}</p>
+          <DatePick />
 				</div>
 			</nav>
         <main className="min-h-screen flex flex-col items-center">
